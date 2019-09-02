@@ -1,0 +1,186 @@
+#app{
+    background: #f7f7f7;
+    width: 70%;
+    max-width: 700px;
+    padding: 20px;
+    text-align: center;
+    margin: 5% auto;
+    box-shadow: -4px 5px 15px 0px rgba(0,0,0,0.4);
+    border-radius: 8px;
+}
+
+div {
+    display: block;
+}
+
+p{
+  font-weight: bold;
+}
+
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-weight: bold;
+    box-shadow: -4px 5px 15px 0px rgba(0,0,0,0.4);
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button {
+  background-color: #363535;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  font-weight: bold;
+  box-shadow: -4px 5px 15px 0px rgba(0,0,0,0.4);
+  border-radius: 8px;
+}
+
+#listar-usuarios {
+  display: none;
+}
+
+#cadastrar-usuarios {
+  display: none;
+}
+
+#aprovar-ocorrencias {
+  display: none;
+}
+
+#button-aprovar {
+  display: none;
+}
+
+#cadastrar-usuarios p {
+  font-weight: bold;
+}
+
+#listar-ocorrencias {
+  display: none;
+}
+
+#mais-detalhes{
+  display:none;
+  padding: 8px;
+}
+
+#cadastrar-ocorrencias{
+  display: none;
+}
+
+#cadastrar-ocorrencias p {
+  font-weight: bold;
+}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  width: 25%;
+}
+
+td {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  width: 50%;
+}
+
+/* #table-header th{
+  width: 25%;
+}
+
+tr #table-data {
+  width: 25%;
+} */
+
+tr:hover {
+  background-color: white;
+}
+
+.admin-label { 
+  font-weight: bold;
+}
+
+.admin-check {
+  padding: 0px;
+  margin: 0px;
+  position: relative;
+}
+
+section #table-section{
+  overflow-y:auto;
+}
+
+table #occurrences{
+  width: 100%;
+}
+
+table #users{
+  width: 100%;
+}
+
+#table-header {
+  background-color: #363535;
+  color: white;
+}
+
+#table-data {
+  cursor: pointer;
+}
+
+#alphabet {
+  padding-bottom: 20px;
+}
+
+#alphabet ul{ 
+  height: fit-content !important;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+
+  box-shadow: -4px 5px 15px 0px rgba(0,0,0,0.4);
+  border-radius: 8px;
+}
+
+#alphabet li {
+  cursor: pointer;
+}
+
+#alphabet li:hover{
+  background-color: white;
+}
+
+#table-terms{
+  display:none;
+}
+
+@media screen and (max-width: 375px){
+  th {
+    font-size: 0.52em;
+  }
+
+  td{
+    font-size: 0.52em;
+  }
+
+  input[type=text], input[type=password] {
+    font-size: 10px;
+  }
+}
