@@ -1,0 +1,31 @@
+#application{
+    background: #f7f7f7;
+    width: 70%;
+    max-width: 700px;
+    padding: 20px;
+    text-align: center;
+    margin: 5% auto;
+    box-shadow: -4px 5px 15px 0px rgba(0,0,0,0.4);
+    border-radius: 8px;
+}
+
+div {
+    display: block;
+}
+
+button {
+    background-color: #363535;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    font-weight: bold;
+    box-shadow: -4px 5px 15px 0px rgba(0,0,0,0.4);
+    border-radius: 8px;
+  }
+
+#site{
+    display:none;
+}

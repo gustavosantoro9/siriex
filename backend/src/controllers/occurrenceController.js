@@ -27,11 +27,27 @@ module.exports = {
         res.send(occurrences);
     },
 
+    async indexLastFive(req, res) {
+        let occurrences = await Occurrence.findAll({
+            attributes: ['id', 'nome', 'local', 'datahora', 'tipo'],
+            where: {
+                aprovado: true
+            },
+            order: [
+                ['id','desc']
+            ],
+            limit: 5,
+
+        });
+        res.send(occurrences);
+    },
+
     async indexName(req, res) {
         let occurrence = await Occurrence.findAll({
             attributes: ['id', 'nome', 'local', 'datahora', 'tipo'],
             where: {
-                nome: req.params.nome
+                nome: req.params.nome,
+                aprovado: true
             }
         });
         res.send(occurrence);
@@ -41,7 +57,7 @@ module.exports = {
         let occurrence = await Occurrence.findAll({
             attributes: ['id', 'nome', 'local', 'datahora', 'tipo', 'solicitante', 'tipoexplosivo',
                 'tipoobjeto', 'caracteristicasfisicas', 'motivacao', 'iis',
-                'metodologia', 'policial', 'administrador'],
+                'metodologia', 'policial', 'administrador', 'observacoes'],
             where: {
                 id: req.params.id
             }
@@ -50,6 +66,7 @@ module.exports = {
     },
 
     async aprove(req, res) {
+        //console.log(req.params.admin);
         let occurrence = await Occurrence.update({
             aprovado: true,
             administrador: req.params.admin

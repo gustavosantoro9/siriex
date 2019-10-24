@@ -1,49 +1,38 @@
 import React, { Component } from 'react';
 import './pages.css'
 import api from '../services/api';
+import Moment from 'react-moment';
 
 class Ocorrencias extends Component {
 
     state = {
-        search: '',
-        nome: '',
-        local: '',
-        datahora: '',
-        tipo: '',
-        solicitante: '',
-        tipoexplosivo: '',
-        tipoobjeto: '',
-        caracteristicasfisicas: '',
-        motivacao: '',
-        iis: '',
-        metodologia: '',
+        search: null,
+        nome: null,
+        local: null,
+        datahora: null,
+        tipo: null,
+        solicitante: null,
+        tipoexplosivo: null,
+        tipoobjeto: null,
+        caracteristicasfisicas: null,
+        motivacao: null,
+        iis: null,
+        metodologia: null,
         aprovado: false,
-        policial: 'gustavo',  // preciso fazer a lógica para pegar o atual user
-        administrador: 'administrador', // preciso fazer a lógica de pegar o administrador que aprovar.
+        policial: this.props.location.state.policial,  // preciso fazer a lógica para pegar o atual user
+        administrador: this.props.location.state.administrador, // preciso fazer a lógica de pegar o administrador que aprovar.
+        observacoes: null,
         currentId: 0,
         ocorrencias: [],
+        admin: this.props.location.state.admin
     };
 
     async componentDidMount(){
         const response = await api.get('occurrences');
-        this.setState({ocorrencias: response.data});       
-    }
-
-    async componentDidUpdate(prevProps, prevState){
-        // var x = document.getElementById("btn-listar");
-        // x.style.display = "block";
-        // var y = document.getElementById("btn-cadastrar");
-        // y.style.display = "block";
-        // var z = document.getElementById("btn-aprovar");
-        // z.style.display = "block";
-        // var a = document.getElementById("listar-ocorrencias");
-        // a.style.display = "none";
-        // var b = document.getElementById("cadastrar-ocorrencias");
-        // b.style.display = "none";
-        // var c = document.getElementById("aprovar-ocorrencias");
-        // c.style.display = "none";
-        // var d = document.getElementById("button-aprovar");
-        // d.style.display = "none";
+        this.setState({ocorrencias: response.data});    
+        // console.log("User: ", this.state.policial);
+        // console.log("ADMIN: ", this.state.admin);
+        // console.log("User2: ", this.state.administrador);
     }
 
     showNotApproved = async e =>{
@@ -78,10 +67,20 @@ class Ocorrencias extends Component {
             metodologia: this.state.metodologia,
             aprovado: this.state.aprovado,
             policial: this.state.policial,
-            administrador: this.state.administrador
+            observacoes: this.state.observacoes
         }
 
-        await api.post('/newoccurrence', data);
+        if(data.nome && data.local && data.datahora && data.tipo && data.solicitante &&
+            data.tipoexplosivo && data.tipoobjeto && data.caracteristicasfisicas && 
+            data.motivacao && data.iis && data.metodologia){
+                await api.post('/newoccurrence', data);
+                alert("Ocorrência cadastrada com sucesso.");
+                
+        }
+        else{
+            alert("Preencha todos os campos, apenas observações é opcional.");
+            
+        }
     }
 
     async handleTableClick(id) {
@@ -103,31 +102,31 @@ class Ocorrencias extends Component {
             alert("nenhuma ocorrencia selecionada, por favor selecione uma");
         }
         else{
-            await api.post(`/occurrences/aprove/${id}${this.state.administrador}`); 
+            const response = await api.post(`/occurrences/aprove/${id}&${this.state.administrador}`); 
+            if(response){
+                alert("Ocorrência aprovada.");
+                
+            }
             // preciso implementar passando o atual usuário
         }       
-    }
-    
+    }  
 
     render(){
 
         function showListar(){       
-            change();
-        
+            change();       
             var x = document.getElementById("listar-ocorrencias");
             x.style.display = "block";
         }
 
         function showCadastrar(){
             change();
-
             var x = document.getElementById("cadastrar-ocorrencias");
             x.style.display = "block";
         }
 
         function showAprovar(){
             change();
-
             var x = document.getElementById("aprovar-ocorrencias");
             x.style.display = "block";
             var y = document.getElementById("button-aprovar");
@@ -140,15 +139,22 @@ class Ocorrencias extends Component {
             var y = document.getElementById("btn-cadastrar");
             y.style.display = "none";
             var z = document.getElementById("btn-aprovar");
-            z.style.display = "none";
+            if(z)
+                z.style.display = "none";
         }
 
-        return (
+        return (        
             <div id="app">
                 <p>OCORRÊNCIAS</p>
                 <button onClick={showListar} id="btn-listar">Listar</button>
                 <button onClick={showCadastrar} id="btn-cadastrar">Cadastrar</button>
-                <button onClick={() => {this.showNotApproved() ; showAprovar()} } id="btn-aprovar">Aprovar</button>
+                {/* se não for admin ocultar */}
+                {
+                    this.state.admin ? 
+                    (<button onClick={() => {this.showNotApproved() ;
+                         showAprovar()} } id="btn-aprovar">Aprovar</button>
+                    ) : null 
+                }
                 
                 <div id="listar-ocorrencias">
                     <form id="search-box" onSubmit={this.handleSubmit}>
@@ -175,7 +181,7 @@ class Ocorrencias extends Component {
                                     <tr id="table-data" key={ocorrencia.id} onClick={() => this.handleTableClick(ocorrencia.id)}>
                                         <th>{ocorrencia.nome}</th>
                                         <th>{ocorrencia.local}</th>
-                                        <th>{ocorrencia.datahora}</th>
+                                        <th><Moment date={new Date(ocorrencia.datahora)} format="DD/MM/YYYY HH:MM"/></th>
                                         <th>{ocorrencia.tipo}</th>
                                     </tr>                         
                                 ))}                                    
@@ -199,7 +205,7 @@ class Ocorrencias extends Component {
                                     </tr>                  
                                     <tr>
                                         <th>Data Hora</th>
-                                        <td>{ocorrencia.datahora}</td>
+                                        <td><Moment date={new Date(ocorrencia.datahora)} format="DD/MM/YYYY HH:MM"/></td>
                                     </tr>  
                                     <tr>
                                         <th>Tipo</th>
@@ -241,6 +247,10 @@ class Ocorrencias extends Component {
                                         <th>Administrador</th>
                                         <td>{ocorrencia.administrador}</td>
                                     </tr>  
+                                    <tr>
+                                        <th>Observações</th>
+                                        <td>{ocorrencia.observacoes}</td>
+                                    </tr>  
                                 </tbody>            
                             </table>           
                         ))}               
@@ -264,9 +274,9 @@ class Ocorrencias extends Component {
                             value={this.state.local}
                         />
                         <input                             
-                            type="text"
+                            type="datetime-local"
                             name="datahora"
-                            placeholder="Digite a data hora ..."
+                            
                             onChange={this.handleChange}
                             value={this.state.datahora}
                         />
@@ -326,6 +336,13 @@ class Ocorrencias extends Component {
                             onChange={this.handleChange}
                             value={this.state.metodologia}
                         />
+                        <input                             
+                            type="text"
+                            name="observacoes"
+                            placeholder="Digite uma observação se desejar ..."
+                            onChange={this.handleChange}
+                            value={this.state.observacoes}
+                        />
                         <button type="submit" >Cadastrar</button>
                     </form>
                 </div>
@@ -344,7 +361,7 @@ class Ocorrencias extends Component {
                                     <tr id="table-data" key={ocorrencia.id} onClick={() => this.handleTableClick(ocorrencia.id)}>
                                         <th>{ocorrencia.nome}</th>
                                         <th>{ocorrencia.local}</th>
-                                        <th>{ocorrencia.datahora}</th>
+                                        <th><Moment date={new Date(ocorrencia.datahora)} format="DD/MM/YYYY HH:MM"/></th>
                                         <th>{ocorrencia.tipo}</th>
                                     </tr>                         
                                 ))}                                    

@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       nome: DataTypes.STRING,
       local: DataTypes.STRING,
-      datahora: DataTypes.STRING,
+      datahora: DataTypes.DATE,
       tipo: DataTypes.STRING,
       solicitante: DataTypes.STRING,
       tipoexplosivo: DataTypes.STRING,
@@ -17,7 +17,8 @@ module.exports = (sequelize, DataTypes) => {
       metodologia: DataTypes.STRING,
       aprovado: DataTypes.BOOLEAN,
       policial: DataTypes.STRING,
-      administrador: DataTypes.STRING
+      administrador: DataTypes.STRING,
+      observacoes: DataTypes.STRING
     });
   
   return Occurrence;

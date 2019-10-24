@@ -5,9 +5,9 @@ import api from '../services/api';
 class Usuarios extends Component {
 
     state = {
-        name: '',
-        email: '',
-        password: '',
+        name: null,
+        email: null,
+        password: null,
         admin: false,
         users: [],
     };
@@ -38,8 +38,14 @@ class Usuarios extends Component {
             password: this.state.password,
             admin: this.state.admin
         }
-
-        await api.post('/newuser', data);
+            
+        if(data.name && data.email && data.password){
+            await api.post('/newuser', data);
+            alert("Usuário cadastrado com sucesso.");
+        }
+        else{
+            alert("Preencha todos os campos.");
+        }
     }
 
     render(){

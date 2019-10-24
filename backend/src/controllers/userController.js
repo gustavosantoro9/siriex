@@ -35,26 +35,24 @@ module.exports = {
     },
 
     async login(req, res){
-        const { email, password } = req.body;
-
-        console.log(email);
-        console.log(password);
+        var username = req.params.username;
+        var password = req.params.password;
         
         let user = await User.findAll({
             attributes: ['email', 'password', 'admin'],
             where: {
-                email: email
+                email: username,
+                password: password
             } 
         });
-    
-        user.forEach(element => {
-            if(element.password == password){
-                console.log("foi");
-            }
-            else{
-                console.log("nao foi");
-            }
-        });
+
+        if(user[0]){
+            res.send(user);
+        }
+        else{
+            res.send(false);
+        }
+        
     }
     
 };
